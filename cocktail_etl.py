@@ -15,30 +15,31 @@ ingredients_list = []
 
 #test ingredients with id 11164
 def ingredients(cocktail):
+    ing = []
     for drink in randomCocktail.get("drinks", []):
-        for i in range(1, 16):  # Assuming the ingredients are numbered from 1 to 15
+        for i in range(1, 16):
             ingredient_key = f"strIngredient{i}"
             ingredient_value = drink.get(ingredient_key)
 
             if ingredient_value is not None:
                 measure_key = f"strMeasure{i}"
                 measure_value = drink.get(measure_key, "")
-                ing = {
+ 
+                ing.append({
                     ingredient_value : measure_value
-                }
-                print(ing)
-                # print(f"{ingredient_value}: {measure_value}")
+                })
+    return ing
         
 ingredients(randomCocktail)
-# ingredients_list.append(ingredients(randomCocktail))
+ingredients_list.append(ingredients(randomCocktail))
 
-# cocktail_info = {
-#     "Cocktail" : name,
-#     "Ingredients" : ingredients_list,
-#     "Glass" : glass,
-#     "Instructions" : instructions
-# }
+cocktail_info = {
+    "Cocktail" : name,
+    "Ingredients" : ingredients_list,
+    "Glass" : glass,
+    "Instructions" : instructions
+}
 
-# cocktail.append(cocktail_info)
+cocktail.append(cocktail_info)
 
-# print(ingredients_list) 
+print(cocktail) 
