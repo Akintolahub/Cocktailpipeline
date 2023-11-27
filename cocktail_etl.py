@@ -1,5 +1,7 @@
 import requests
 import json
+import pandas as pd
+import string
 
 
 url = 'https://www.thecocktaildb.com/api/json/v1/1/random.php'
@@ -10,12 +12,10 @@ randomCocktail = r.json()
 name = randomCocktail["drinks"][0]["strDrink"]
 glass = randomCocktail["drinks"][0]["strGlass"]
 instructions = randomCocktail["drinks"][0]["strInstructions"]
-cocktail = []
 ingredients_list = []
 
 #test ingredients with id 11164
 def ingredients(cocktail):
-    ing = []
     for drink in randomCocktail.get("drinks", []):
         for i in range(1, 16):
             ingredient_key = f"strIngredient{i}"
@@ -24,22 +24,20 @@ def ingredients(cocktail):
             if ingredient_value is not None:
                 measure_key = f"strMeasure{i}"
                 measure_value = drink.get(measure_key, "")
- 
-                ing.append({
-                    ingredient_value : measure_value
-                })
-    return ing
+                ingredients_list.append(ingredient_value + ": " + measure_value)
+
+    return ingredients_list
         
 ingredients(randomCocktail)
-ingredients_list.append(ingredients(randomCocktail))
 
-cocktail_info = {
+cocktail = {
     "Cocktail" : name,
-    "Ingredients" : ingredients_list,
+    "Ingredients" : [ingredients_list],
     "Glass" : glass,
     "Instructions" : instructions
 }
 
-cocktail.append(cocktail_info)
+print(cocktail)
 
-print(cocktail) 
+df = pd.DataFrame(cocktail)
+df.to_csv("randomcocktail.csv")
